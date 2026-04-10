@@ -1,0 +1,6 @@
+/target
+*.docx
+*.md
+!README.md
+Cargo.lock
+.DS_Store

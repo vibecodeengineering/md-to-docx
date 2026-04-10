@@ -1,0 +1,22 @@
+[package]
+name = "md-to-docx"
+version = "0.1.0"
+edition = "2021"
+description = "A CLI tool to convert Markdown files to DOCX format"
+authors = ["Firoz"]
+license = "MIT"
+repository = "https://github.com/vibecodeengineering/md-to-docx"
+
+[[bin]]
+name = "md-to-docx"
+path = "src/main.rs"
+
+[dependencies]
+pulldown-cmark = "0.9"
+docx-rs = "0.4"
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0"
+
+[profile.release]
+opt-level = 3
+lto = true
