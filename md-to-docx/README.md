@@ -27,6 +27,24 @@ The binary will be at `target/release/md-to-docx`.
 
 - Rust 1.70+ installed
 
+## Cross-compilation
+
+### Building for Windows on Linux
+
+You can cross-compile the binary for Windows from a Linux machine using Docker:
+
+```bash
+./build-windows.sh
+```
+
+This will create a Docker image that builds the Windows binary (`md-to-docx.exe`) and outputs it to the current directory.
+
+**Requirements:**
+- Docker installed and running
+- Linux host (tested on Debian Trixie)
+
+The resulting binary will be available as `md-to-docx.exe` in the current directory.
+
 ## Usage
 
 ```bash
