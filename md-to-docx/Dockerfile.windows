@@ -1,0 +1,35 @@
+FROM rust:1-trixie AS builder
+
+# Add Windows target
+RUN rustup target add x86_64-pc-windows-gnu
+
+# Install required dependencies for cross-compilation
+RUN apt-get update && apt-get install -y \
+    mingw-w64 \
+    mingw-w64-x86-64-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy only dependency manifests first for caching
+COPY . .
+
+# Download and compile dependencies
+RUN cargo build --target x86_64-pc-windows-gnu --release
+
+# Copy source code
+COPY src/ src/
+
+# Clean build artifacts and rebuild with actual source
+RUN rm -rf target/x86_64-pc-windows-gnu/release/deps/md-to-docx*
+
+# Build for Windows target
+RUN cargo build --target x86_64-pc-windows-gnu --release
+
+# Final stage: extract only the binary
+FROM scratch
+WORKDIR /app
+COPY --from=builder /usr/src/app/target/x86_64-pc-windows-gnu/release/md-to-docx.exe .
+CMD ["./md-to-docx.exe"]
+
